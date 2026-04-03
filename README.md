@@ -1,6 +1,17 @@
 #  Event Booking System
 
 A production-ready RESTful API for browsing events and booking tickets, built with **Node.js**, **Express**, **Sequelize ORM**, and **MySQL** 
+This project was built as part of a backend assignment for TheLattice.
+
+A production-ready RESTful API for browsing events and booking tickets, built with **Node.js**, **Express**, **Sequelize ORM**, and **MySQL**
+
+---
+
+## 🌐 Live Demo
+
+- **API Base:** https://event-booking-system-production-8dd7.up.railway.app
+- **Swagger UI:** https://event-booking-system-production-8dd7.up.railway.app/api-docs
+- **Health Check:** https://event-booking-system-production-8dd7.up.railway.app/health
 
 ---
 
@@ -53,8 +64,8 @@ event-booking/
 │   ├── schema.sql              
 │   ├── swagger.yaml            
 │   └── EventBooking.postman_collection.json
-├── .env
-├──.sequelizerc
+├── .env.example
+├── .sequelizerc
 ├── docker-compose.yml
 ├── Dockerfile
 └── package.json
@@ -75,23 +86,23 @@ cd event-booking
 docker-compose up --build
 ```
 
-The API will be available at **http://localhost:3000**  
+The API will be available at **http://localhost:3000**
 Swagger docs at **http://localhost:3000/api-docs**
 
 ---
 
 ## 📡 API Endpoints
 
-| Method | Endpoint                    | Auth | Description                          |
-|--------|-----------------------------|------|--------------------------------------|
-| POST   | `/api/auth/register`        | ❌   | Register a new user                  |
-| POST   | `/api/auth/login`           | ❌   | Login and get JWT token              |
-| GET    | `/api/auth/me`              | ✅   | Get current user profile             |
-| GET    | `/api/events`               | ❌   | List all upcoming events             |
-| POST   | `/api/events`               | ✅   | Create a new event                   |
-| POST   | `/api/bookings`             | ✅   | Book tickets (race-condition safe)   |
-| GET    | `/api/users/:id/bookings`   | ✅   | Get all bookings for a user          |
-| POST   | `/api/events/:id/attendance`| ✅   | Check in attendee by booking code    |
+| Method | Endpoint                     | Auth | Description                         |
+|--------|------------------------------|------|-------------------------------------|
+| POST   | `/api/auth/register`         | ❌   | Register a new user                 |
+| POST   | `/api/auth/login`            | ❌   | Login and get JWT token             |
+| GET    | `/api/auth/me`               | ✅   | Get current user profile            |
+| GET    | `/api/events`                | ❌   | List all upcoming events            |
+| POST   | `/api/events`                | ✅   | Create a new event                  |
+| POST   | `/api/bookings`              | ✅   | Book tickets (race-condition safe)  |
+| GET    | `/api/users/:id/bookings`    | ✅   | Get all bookings for a user         |
+| POST   | `/api/events/:id/attendance` | ✅   | Check in attendee by booking code   |
 
 ---
 
@@ -123,10 +134,11 @@ Get a token by registering or logging in.
 | `RATE_LIMIT_WINDOW_MS` | Rate limit window (ms)             | `900000`      |
 | `RATE_LIMIT_MAX`       | Max requests per window            | `100`         |
 
+
+
 ---
 
-
-##  Key Design Decisions
+## 🧠 Key Design Decisions
 
 ### Race Condition Handling
 When two users simultaneously try to book the last ticket, naive reads of `remaining_tickets` could allow both to succeed. This API prevents that by:
@@ -146,5 +158,17 @@ const event = await Event.findOne({
 
 ### Unique Booking Codes
 Each booking generates a UUID v4 using Node's built-in `crypto` module (via the `uuid` package), ensuring globally unique, non-guessable codes.
+
+---
+
+## 🧪 Testing with Postman
+
+1. Import `docs/EventBooking.postman_collection.json` into Postman
+2. Run **Register** or **Login** first — the token is saved automatically
+3. Subsequent requests will use the saved `{{token}}` and `{{eventId}}`
+4. To test against the live server, update the `baseUrl` variable to:
+```
+https://event-booking-system-production-8dd7.up.railway.app/api
+```
 
 ---

@@ -15,7 +15,7 @@ info:
     email: hr@thelattice.in
 
 servers:
-  - url: http://localhost:3000/api
+  - url: event-booking-system-production-8dd7.up.railway.app/api
     description: Local development server
 
 tags:

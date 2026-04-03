@@ -43,7 +43,7 @@ services:
     ports:
       - "3000:3000"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      test: ["CMD", "wget", "-qO-", "event-booking-system-production-8dd7.up.railway.app/health"]
       interval: 30s
       timeout: 10s
       retries: 3

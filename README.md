@@ -1,6 +1,6 @@
 #  Event Booking System
 
-A production-ready RESTful API for browsing events and booking tickets, built with **Node.js**, **Express**, **Sequelize ORM**, and **MySQL** as an assignment from thelattice
+A production-ready RESTful API for browsing events and booking tickets, built with **Node.js**, **Express**, **Sequelize ORM**, and **MySQL** 
 
 ---
 

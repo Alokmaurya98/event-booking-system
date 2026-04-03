@@ -6,7 +6,7 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "event-booking-system-production-8dd7.up.railway.app/api", "type": "string" },
+    { "key": "baseUrl", "value": "https://event-booking-system-production-8dd7.up.railway.app/api", "type": "string" },
     { "key": "token",   "value": "",                          "type": "string" },
     { "key": "userId",  "value": "1",                         "type": "string" },
     { "key": "eventId", "value": "1",                         "type": "string" },

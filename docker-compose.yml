@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: event_booking_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: hello@123
+      MYSQL_DATABASE: event_booking_db
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: hola@123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docs/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: event_booking_api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: event_booking_db
+      DB_USER: appuser
+      DB_PASSWORD: hola@123
+      JWT_SECRET: a3f9c2e1b847d6f0e2a1c4b5d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7
+      JWT_EXPIRES_IN: 7d
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 100
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  db_data:
